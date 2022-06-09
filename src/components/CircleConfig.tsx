@@ -26,8 +26,8 @@ export const CircleConfig = (props: CircleConfigProps) => {
       <td>{plugedInput("startAngle",0,Math.PI*2,0.05)}</td>
       <td>{plugedInput("rotationAngle",0,Math.PI*2-0.001, 0.05)}</td>
       <td>{plugedInput("width",1,25,1)}</td>
-      <td>{plugedInput("moveStep",-1,1,0.01)}</td>
-      <td>{plugedInput("growStep",-1,1,0.01)}</td>
+      <td>{plugedInput("moveStep",-.5,.5,0.01)}</td>
+      <td>{plugedInput("growStep",-.5,.5,0.01)}</td>
       <td><Switch name="growStyle" value={props.growStyle} dispatch={handleChange}/></td>
       <td><Color name="color" value={props.color} dispatch={handleChange} /></td>
     </tr>

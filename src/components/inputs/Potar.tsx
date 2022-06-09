@@ -13,9 +13,11 @@ export interface PotarProps {
 };
 
 const getPointFromEvent = (e: React.MouseEvent<HTMLDivElement>) => {
-  const halfWidth = Math.floor(e.currentTarget.offsetWidth / 2);
-  // TODO: clic relatif au centre du potar
-  return [e.clientX - e.currentTarget.clientLeft - halfWidth, e.clientY - e.currentTarget.offsetTop - halfWidth];
+  // get the position of the event relative to the parent center
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+  return [x, y];
 }
 
 export const Potar = (props: PotarProps) => {
@@ -73,18 +75,19 @@ export const Potar = (props: PotarProps) => {
   }
 
   return (
-    <div className="potar">
+    <div className="potar"
+      onWheel={handleWheel}
+      onClick={handleClick}
+      onMouseMove={handleMove}
+    >
       <input type="hidden" value={props.value} />
       {stepMarks()}      
       <div className="potar-inner" 
         style={{
           transform: `rotate(${ratio * MAXROT}rad)`,
         }}
-        onWheel={handleWheel}
-        onClick={handleClick}
-        onMouseMove={handleMove}
       />
-      {/* <span className="potar-label">{ Number.isInteger(props.value) ? props.value : props.value.toPrecision(2) }</span> */}
+      <span className="potar-label">{ Number.isInteger(props.value) ? props.value : props.value.toPrecision(1) }</span>
     </div>
   )
 }

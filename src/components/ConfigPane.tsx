@@ -41,9 +41,11 @@ export const ConfigPane = (props: ConfigPaneProps) => {
           ))}
         </tbody>
       </table>
-      <button onClick={addCircle}>+</button>
-      <button onClick={startLoop}>Start</button>
-      <button onClick={stopLoop}>Stop</button>
+      <div className="config-buttons">
+        <button onClick={addCircle}>+</button>
+        <button onClick={startLoop}>Start</button>
+        <button onClick={stopLoop}>Stop</button>
+      </div>
     </div>
   )
 

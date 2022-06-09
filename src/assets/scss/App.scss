@@ -1,5 +1,10 @@
 $potarSize: 25px;
 
+body {
+  padding: 0;
+  margin: 0;
+}
+
 .app {
   display: flex;
   justify-content: space-between;
@@ -20,11 +25,29 @@ $potarSize: 25px;
 
 .config-pane {
   border: 1px solid grey;
+  height: 99vh;
+  overflow: hidden;
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  & table {
+    border-collapse: collapse;
+    width: 100%;
+
+    & tr th {
+      width: 10%;
+      word-break: break-word;
+    }
+
+    & tr th,
+    & tr td {
+      border-width: 0 1px 0 1px;
+      border-color: #ccc;
+      border-style: solid;
+    }
+  }
+
+  & .config-buttons {
+    position: sticky;
+    bottom: 0;
   }
 }
 
@@ -76,6 +99,14 @@ $potarSize: 25px;
       left: -25%;
       transform-origin: 19px 0px;
     }
+  }
+
+  &-label {
+    font-size: .6rem;
+    position: absolute;
+    bottom: -4px;
+    left: calc(50% - 20px);
+    color: #e91e1e;
   }
 }
 
