@@ -1,6 +1,6 @@
 import * as React from "react";
 import { GrowStyle, ICircle } from "../interfaces/ICircle";
-import { CirclesAction, circlesReducer } from "./reducer";
+import { CirclesAction, CirclesActionType, circlesReducer } from "./reducer";
 
 
 const defaultCircle: ICircle = {
@@ -31,31 +31,8 @@ export const AppCtxProvider = ({children}) => {
   const [loopInterval, setLoopInterval] = React.useState(null);
 
   React.useEffect( () => {
-    // TODO : put this in any reducer
     if (looping) {
-      circles.forEach((circle) => {
-        circle.startAngle += circle.moveStep;
-        circle.startAngle = circle.startAngle % (Math.PI*2);
-
-        circle.rotationAngle += circle.growStep;
-        
-        
-        if (circle.growStyle == GrowStyle.reset) {
-          // reset
-          circle.rotationAngle = circle.rotationAngle % (Math.PI*2);
-          if (circle.rotationAngle < 0) {
-            circle.rotationAngle += Math.PI*2;
-          }
-        } else {
-          // decrease
-          if (circle.rotationAngle > Math.PI*2 || circle.rotationAngle < 0) {
-            circle.rotationAngle = Math.min(Math.PI*2-0.00001, Math.max(0, circle.rotationAngle));
-            circle.moveStep += circle.growStep;
-            circle.growStep *= -1;
-          }
-        }
-
-      });
+      dispatch({type: CirclesActionType.MOVE});
       requestAnimationFrame( setLoopInterval );
     }
   }, [looping, loopInterval]);

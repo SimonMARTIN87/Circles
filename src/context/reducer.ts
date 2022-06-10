@@ -1,10 +1,11 @@
-import { getRandomCircle, ICircle } from "../interfaces/ICircle";
+import { getRandomCircle, GrowStyle, ICircle } from "../interfaces/ICircle";
 
 export enum CirclesActionType {
   ADD_CIRCLE = 'ADD_CIRCLE',
   REMOVE_CIRCLE = 'REMOVE_CIRCLE',
   UPDATE_CIRCLE = 'UPDATE_CIRCLE',
   UPDATE_CENTER = 'UPDATE_CENTER',
+  MOVE = 'MOVE',
 }
 
 export interface CirclesAction {
@@ -32,6 +33,30 @@ export const circlesReducer = (state: ICircle[] = [], action: CirclesAction): IC
     case CirclesActionType.UPDATE_CENTER:
       return state.map((circle: ICircle) => {
         return { ...circle, centerX: action.payload.x, centerY: action.payload.y };
+      });
+    case CirclesActionType.MOVE:
+      return state.map((circle: ICircle) => {
+        circle.startAngle += circle.moveStep;
+        circle.startAngle = circle.startAngle % (Math.PI*2);
+
+        circle.rotationAngle += circle.growStep;
+        
+        
+        if (circle.growStyle == GrowStyle.reset) {
+          // reset
+          circle.rotationAngle = circle.rotationAngle % (Math.PI*2);
+          if (circle.rotationAngle < 0) {
+            circle.rotationAngle += Math.PI*2;
+          }
+        } else {
+          // decrease
+          if (circle.rotationAngle > Math.PI*2 || circle.rotationAngle < 0) {
+            circle.rotationAngle = Math.min(Math.PI*2-0.00001, Math.max(0, circle.rotationAngle));
+            circle.moveStep += circle.growStep;
+            circle.growStep *= -1;
+          }
+        }
+        return circle;
       });
     default:
       return state;
