@@ -1,4 +1,5 @@
 import { useAppContext } from "../context";
+import { CirclesActionType } from "../context/reducer";
 import { GrowStyle, ICircle } from "../interfaces/ICircle";
 import { Color } from "./inputs/Color";
 import { Potar } from "./inputs/Potar";
@@ -12,7 +13,13 @@ export const CircleConfig = (props: CircleConfigProps) => {
   const ctx = useAppContext();
 
   const handleChange = (name, value) => {
-      ctx.setCircleProps(props.index, { [name]: value });
+    ctx.dispatch({
+      type: CirclesActionType.UPDATE_CIRCLE,
+      payload: {
+        index: props.index,
+        [name]: value
+      }
+    });
   }
 
   const plugedInput = (name: keyof ICircle, min: number, max: number, step: number) => (

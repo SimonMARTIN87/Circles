@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAppContext } from "../context"
+import { CirclesActionType } from "../context/reducer";
 import { CircleConfig } from "./CircleConfig";
 
 export interface ConfigPaneProps {
@@ -9,7 +10,7 @@ export const ConfigPane = (props: ConfigPaneProps) => {
   const ctx = useAppContext();
 
   const addCircle = () => {
-    ctx.addCircle();
+    ctx.dispatch({type: CirclesActionType.ADD_CIRCLE});
   }
 
   const startLoop = () => {
@@ -37,7 +38,7 @@ export const ConfigPane = (props: ConfigPaneProps) => {
         </thead>
         <tbody>
           {ctx.circles.map((circle, index) => (
-            <CircleConfig index={index} {...circle} />
+            <CircleConfig index={index} key={index} {...circle} />
           ))}
         </tbody>
       </table>

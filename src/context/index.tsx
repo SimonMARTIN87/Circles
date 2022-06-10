@@ -1,5 +1,6 @@
 import * as React from "react";
-import { getRandomCircle, GrowStyle, ICircle } from "../interfaces/ICircle";
+import { GrowStyle, ICircle } from "../interfaces/ICircle";
+import { CirclesAction, circlesReducer } from "./reducer";
 
 
 const defaultCircle: ICircle = {
@@ -17,8 +18,7 @@ const defaultCircle: ICircle = {
 
 interface IAppContext {
   circles: ICircle[];
-  addCircle: () => void;
-  setCircleProps: (index: number, props: Partial<ICircle>) => void;
+  dispatch: React.Dispatch<CirclesAction>;
   startLoop: () => void;
   stopLoop: () => void;
 }
@@ -26,23 +26,12 @@ interface IAppContext {
 const AppCtx = React.createContext<IAppContext>(null);
 
 export const AppCtxProvider = ({children}) => {
-  const [circles, setCircles] = React.useState<ICircle[]>([{...defaultCircle}]);
+  const [circles, dispatch] = React.useReducer(circlesReducer, [{...defaultCircle}]);
   const [looping, setLooping] = React.useState(false);
   const [loopInterval, setLoopInterval] = React.useState(null);
 
-  const addCircle = () => {
-    setCircles([...circles, {...getRandomCircle()}]);
-  }
-
-  const setCircleProps = (index: number, props: Partial<ICircle>) => {
-    if (index >= circles.length) {
-      return;
-    }
-    circles[index] = {...circles[index], ...props};
-    setCircles([...circles]);
-  }
-
   React.useEffect( () => {
+    // TODO : put this in any reducer
     if (looping) {
       circles.forEach((circle) => {
         circle.startAngle += circle.moveStep;
@@ -81,8 +70,7 @@ export const AppCtxProvider = ({children}) => {
 
   const defaultContext = {
     circles,
-    addCircle,
-    setCircleProps,
+    dispatch,
     startLoop,
     stopLoop,
   };
